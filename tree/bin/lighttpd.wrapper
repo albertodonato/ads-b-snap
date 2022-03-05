@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+port="$(snapctl get web.port)"
+if [ -z "$port" ]; then
+    port=8080
+fi
+echo "server.port=$port" > "$SNAP_DATA/lighttpd.conf"
+
+exec "$SNAP/bin/lighttpd" \
+     -D \
+     -m "$SNAP/usr/lib/lighttpd" \
+     -f "$SNAP/etc/lighttpd/lighttpd.conf"

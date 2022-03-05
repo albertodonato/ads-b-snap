@@ -1,0 +1,110 @@
+name: dump1090
+summary: ADS-B, Mode S, and Mode 3A/3C demodulator and decoder
+description: |
+  dump1090 is a ADS-B, Mode S, and Mode 3A/3C demodulator and decoder that
+  will receive and decode aircraft transponder messages received via a directly
+  connected software defined radio, or from data provided over a network
+  connection.
+
+  This snap contains a build of the version maintained by FlightAware.
+
+  For more information see: https://github.com/flightaware/dump1090
+
+  There are a few available snap settings:
+
+   * `coord.lat`, `coord.lon`: GPS coordinates of the receiver
+   * `web.port`: TCP port for the web interface (default: 8080)
+
+license: GPL-2.0+
+confinement: strict
+grade: stable
+base: core20
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+adopt-info: dump1090
+
+apps:
+  dump1090:
+    command: bin/dump1090.wrapper
+    daemon: simple
+    install-mode: disable
+    plugs:
+      - network-bind
+      - network-observe
+      - raw-usb
+
+  view1090:
+    command: bin/view1090
+    plugs:
+      - home
+      - network
+
+  lighttpd:
+    command: bin/lighttpd.wrapper
+    daemon: simple
+    install-mode: disable
+    plugs:
+      - network-bind
+
+parts:
+  dump1090:
+    plugin: nil
+    source: https://github.com/flightaware/dump1090
+    source-type: git
+    build-packages:
+      - build-essential
+      - libbladerf-dev
+      - libhackrf-dev
+      - liblimesuite-dev
+      - libncurses5-dev
+      - librtlsdr-dev
+      - libusb-1.0-0-dev
+      - pkg-config
+    stage-packages:
+      - libbladerf2
+      - libhackrf0
+      - liblimesuite20.01-1
+      - librtlsdr0
+      - libusb-1.0-0
+    override-build: |
+      make -j"$SNAPCRAFT_PARALLEL_BUILD_COUNT"
+      BINS="$SNAPCRAFT_PART_INSTALL/bin/"
+      mkdir -p "$BINS"
+      cp -a dump1090 view1090 "$BINS"
+      cp -a public_html "$SNAPCRAFT_PART_INSTALL"
+
+      snapcraftctl set-version "$(git -C $SNAPCRAFT_PART_SRC describe --tags HEAD)"
+    prime:
+      - bin/
+      - lib/*linux-gnu/
+      - public_html
+      - usr/lib/*linux-gnu/
+
+  lighttpd:
+    plugin: autotools
+    source: https://git.lighttpd.net/lighttpd/lighttpd1.4.git
+    source-type: git
+    autotools-configure-parameters:
+      - --prefix=/usr
+    build-packages:
+      - libpcre2-dev
+      - pkg-config
+      - zlib1g-dev
+    stage-packages:
+      - zlib1g
+    override-build: |
+      snapcraftctl build
+      mkdir -p $SNAPCRAFT_PART_INSTALL/etc/lighttpd
+      cp $SNAPCRAFT_PART_SRC/doc/config/conf.d/mime.conf $SNAPCRAFT_PART_INSTALL/etc/lighttpd
+    organize:
+      usr/sbin/lighttpd: bin/lighttpd
+      usr/lib/mod_*: usr/lib/lighttpd/
+    stage:
+      - etc/
+      - usr/lib/
+      - bin/
+
+  tree:
+    plugin: dump
+    source: tree

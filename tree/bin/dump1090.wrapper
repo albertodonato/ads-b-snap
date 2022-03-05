@@ -1,0 +1,25 @@
+#!/bin/bash -e
+
+data_dir="$SNAP_COMMON/data"
+mkdir -p "$data_dir"
+
+lat="$(snapctl get coord.lat)"
+lon="$(snapctl get coord.lon)"
+
+declare -a coord_args=()
+if [ "$lat" ] && [ "$lon" ]; then
+    coord_args=("--lat" "$lat" "--lon" "$lon")
+fi
+
+exec "$SNAP/bin/dump1090" \
+     --enable-agc \
+     --enable-amp \
+     --modeac \
+     --quiet \
+     --enable-df24 \
+     --adaptive-burst \
+     --net \
+     --forward-mlat \
+     --stats-every 1 \
+     --write-json "$data_dir" \
+     "${coord_args[@]}"
