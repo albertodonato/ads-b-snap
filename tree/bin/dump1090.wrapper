@@ -1,10 +1,14 @@
 #!/bin/bash -e
 
+# shellcheck source=tree/etc/script-helpers
+. "$SNAP/etc/script-helpers"
+
+
 data_dir="$SNAP_COMMON/data"
 mkdir -p "$data_dir"
 
-lat="$(snapctl get coord.lat)"
-lon="$(snapctl get coord.lon)"
+lat="$(get_conf coord.lat)"
+lon="$(get_conf coord.lon)"
 
 declare -a coord_args=()
 if [ "$lat" ] && [ "$lon" ]; then
@@ -12,14 +16,16 @@ if [ "$lat" ] && [ "$lon" ]; then
 fi
 
 exec "$SNAP/bin/dump1090" \
+     --adaptive-burst \
      --enable-agc \
      --enable-amp \
-     --modeac \
-     --quiet \
      --enable-df24 \
-     --adaptive-burst \
-     --net \
+     --fix \
      --forward-mlat \
+     --json-location-accuracy 2 \
+     --modeac \
+     --net \
+     --quiet \
      --stats-every 1 \
      --write-json "$data_dir" \
      "${coord_args[@]}"

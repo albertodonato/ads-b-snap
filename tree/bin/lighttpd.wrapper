@@ -1,9 +1,9 @@
 #!/bin/bash -e
 
-port="$(snapctl get web.port)"
-if [ -z "$port" ]; then
-    port=8080
-fi
+# shellcheck source=tree/etc/script-helpers
+. "$SNAP/etc/script-helpers"
+
+port="$(get_conf web.port 8080)"
 echo "server.port=$port" > "$SNAP_DATA/lighttpd.conf"
 
 exec "$SNAP/bin/lighttpd" \
