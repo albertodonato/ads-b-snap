@@ -1,0 +1,14 @@
+# -*- mode: sh -*-
+# shellcheck shell=bash
+
+get_conf() {
+    local name="$1"
+    local default="$2"
+
+    local value
+    value=$(snapctl get "$name")
+    if [ -z "$value" ]; then
+        value="$default"
+    fi
+    echo "$value"
+}

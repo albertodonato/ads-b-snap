@@ -1,4 +1,5 @@
 name: ads-b
+version: git
 summary: ADS-B, Mode S, and Mode 3A/3C demodulator and decoder
 description: |
   This snap provides the dump1090 ADS-B, Mode S, and Mode 3A/3C demodulator and
@@ -23,7 +24,6 @@ base: core20
 architectures:
   - build-on: amd64
   - build-on: arm64
-adopt-info: dump1090
 
 apps:
   dump1090:
@@ -73,7 +73,6 @@ parts:
       BIN="$SNAPCRAFT_PART_INSTALL/bin/"
       mkdir -p "$BIN"
       cp -a dump1090 view1090 "$BIN"
-      snapcraftctl set-version "$(git -C $SNAPCRAFT_PART_SRC describe --tags HEAD)"
     prime:
       - bin/
       - lib/*linux-gnu/
@@ -101,7 +100,7 @@ parts:
     override-build: |
       snapcraftctl build
       CONFDIR="$SNAPCRAFT_PART_INSTALL/etc/lighttpd"
-      mkdir -p "$CONFDIR""
+      mkdir -p "$CONFDIR"
       cp "$SNAPCRAFT_PART_SRC/doc/config/conf.d/mime.conf" "$CONFDIR"
     organize:
       usr/sbin/lighttpd: bin/lighttpd
