@@ -6,17 +6,8 @@ description: |
   decoder to receive and decode aircraft transponder messages received
   via an SDR (software defined radio) USB dongle.
 
-  It uses the [dump1090-fa](https://github.com/flightaware/dump1090) fork.
-
-  It also includes a [web-based
-  interface](https://github.com/wiedehopf/tar1090) to display received
-  aircrafts information and positions on map.
-
-  The snap has a few configuration options:
-
-   * `coord.lat`, `coord.lon`: GPS coordinates of the receiver
-   * `web.port`: TCP port for the web interface (default: 8080)
-
+  See https://github.com/albertodonato/ads-b-snap for more details and
+  configuration options.
 license: GPL-2.0+
 confinement: strict
 grade: stable
