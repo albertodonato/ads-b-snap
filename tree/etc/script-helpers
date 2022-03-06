@@ -12,3 +12,16 @@ get_conf() {
     fi
     echo "$value"
 }
+
+snap_service() {
+    local action="$1"
+    local service_name="$2"
+
+    local target
+    if [ "$service_name" ]; then
+        target="${SNAP_INSTANCE_NAME}.${service_name}"
+    else
+        target="$SNAP_INSTANCE_NAME"
+    fi
+    snapctl "$action" "$target"
+}

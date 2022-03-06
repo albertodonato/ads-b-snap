@@ -3,7 +3,6 @@
 # shellcheck source=tree/etc/script-helpers
 . "$SNAP/etc/script-helpers"
 
-
 data_dir="$SNAP_COMMON/data"
 mkdir -p "$data_dir"
 

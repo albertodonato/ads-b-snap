@@ -37,11 +37,26 @@ interfaces and the the SDR USB device, they can be started with
 ```
 
 
+## Feeding data to Flightradar24
+
+It's possible to feed collected data to
+[Flightradar24](https://www.flightradar24.com/). This requires specifying the
+sharing key (which can be obtained from the account page).
+
+To enable sharing run
+
+```bash
+    sudo snap set ads-b fr24.key=<KEY>
+    sudo snap start --enable ads-b.fr24feed
+```
+
+
 ## Snap configuration options
 
 The snap has a few configuration options:
 
 * `coord.lat`, `coord.lon`: GPS coordinates of the receiver
+* `fr24.key`: account key for the Flightradar24 feeder
 * `web.port`: TCP port for the web interface (default: `8080`)
 
 Services are automatically restarted on configuration changes.

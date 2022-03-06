@@ -1,3 +1,6 @@
 #!/bin/bash -e
 
-snapctl restart "$SNAP_INSTANCE_NAME"
+# shellcheck source=tree/etc/script-helpers
+. "$SNAP/etc/script-helpers"
+
+snap_service restart

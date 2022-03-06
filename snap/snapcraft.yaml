@@ -8,13 +8,17 @@ description: |
 
   See https://github.com/albertodonato/ads-b-snap for more details and
   configuration options.
-license: GPL-2.0+
 confinement: strict
 grade: stable
 base: core20
 architectures:
   - build-on: amd64
+  - build-on: armhf
   - build-on: arm64
+
+layout:
+  /etc/fr24feed.ini:
+    bind-file: $SNAP/etc/fr24feed.ini
 
 apps:
   dump1090:
@@ -34,6 +38,13 @@ apps:
 
   lighttpd:
     command: bin/lighttpd.wrapper
+    daemon: simple
+    install-mode: disable
+    plugs:
+      - network-bind
+
+  fr24feed:
+    command: bin/fr24feed.wrapper
     daemon: simple
     install-mode: disable
     plugs:
@@ -100,6 +111,12 @@ parts:
       - etc/
       - usr/lib/
       - bin/
+
+  fr24feed:
+    plugin: make
+    source: fr24feed
+    build-packages:
+      - curl
 
   tree:
     plugin: dump
