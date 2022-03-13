@@ -12,7 +12,13 @@ FlightAware.
 It also includes the [tar1090](https://github.com/wiedehopf/tar1090) web
 interface to display received aircrafts information and positions on map.
 
-It can be installed from the store via:
+The web interface is available by default on port `8080` (see below for config
+options).
+
+Furthermore, information for received ADB-S messages can be displayed on the
+console with the `adb-s.view` too.
+
+The snap can be installed from the store via:
 
 ```bash
     sudo snap install ads-b
@@ -48,6 +54,6 @@ interfaces and the the SDR USB device, they can be started with
 The snap has a few configuration options:
 
 * `coord.lat`, `coord.lon`: GPS coordinates of the receiver
-* `web.port`: TCP port for the web interface (default: 8080)
+* `web.port`: TCP port for the web interface (default: `8080`)
 
 Services are automatically restarted on configuration changes.
