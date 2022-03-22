@@ -27,18 +27,6 @@ The snap can be installed from the store via:
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/ads-b)
 
 
-## Connecting interfaces
-
-After install, some snap interfaces need to be connected manually for the tools
-to be able to access devices:
-
-
-```bash
-    sudo snap connect ads-b:raw-usb
-    sudo snap connect ads-b:network-observe
-```
-
-
 ## Enabling services
 
 Services provided by the snap are disabled by default. After connecting
