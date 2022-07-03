@@ -10,7 +10,7 @@ description: |
   configuration options.
 confinement: strict
 grade: stable
-base: core20
+base: core22
 architectures:
   - build-on: amd64
   - build-on: armhf
@@ -67,12 +67,12 @@ parts:
     stage-packages:
       - libbladerf2
       - libhackrf0
-      - liblimesuite20.01-1
+      - liblimesuite20.10-1
       - librtlsdr0
       - libusb-1.0-0
     override-build: |
-      make -j"$SNAPCRAFT_PARALLEL_BUILD_COUNT"
-      BIN="$SNAPCRAFT_PART_INSTALL/bin/"
+      make -j"$CRAFT_PARALLEL_BUILD_COUNT"
+      BIN="$CRAFT_PART_INSTALL/bin/"
       mkdir -p "$BIN"
       cp -a dump1090 view1090 "$BIN"
     prime:
@@ -85,7 +85,7 @@ parts:
     source: https://github.com/wiedehopf/tar1090
     source-type: git
     override-build: |
-      cp -a html "$SNAPCRAFT_PART_INSTALL"
+      cp -a html "$CRAFT_PART_INSTALL"
 
   lighttpd:
     plugin: autotools
@@ -100,10 +100,10 @@ parts:
     stage-packages:
       - zlib1g
     override-build: |
-      snapcraftctl build
-      CONFDIR="$SNAPCRAFT_PART_INSTALL/etc/lighttpd"
+      craftctl default
+      CONFDIR="$CRAFT_PART_INSTALL/etc/lighttpd"
       mkdir -p "$CONFDIR"
-      cp "$SNAPCRAFT_PART_SRC/doc/config/conf.d/mime.conf" "$CONFDIR"
+      cp "$CRAFT_PART_SRC/doc/config/conf.d/mime.conf" "$CONFDIR"
     organize:
       usr/sbin/lighttpd: bin/lighttpd
       usr/lib/mod_*: usr/lib/lighttpd/
