@@ -8,7 +8,6 @@ mkdir -p "$data_dir"
 
 lat="$(get_conf coord.lat)"
 lon="$(get_conf coord.lon)"
-
 declare -a coord_args=()
 if [ "$lat" ] && [ "$lon" ]; then
     coord_args=("--lat" "$lat" "--lon" "$lon")

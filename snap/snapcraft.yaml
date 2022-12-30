@@ -50,6 +50,20 @@ apps:
     plugs:
       - network-bind
 
+  adsbxfeed:
+    command: bin/adsbxfeed.wrapper
+    daemon: simple
+    install-mode: disable
+    plugs:
+      - network-bind
+
+  adsbxfeed-mlat:
+    command: bin/adsbxfeed-mlat.wrapper
+    daemon: simple
+    install-mode: disable
+    plugs:
+      - network-bind
+
 parts:
   dump1090:
     plugin: nil
@@ -80,6 +94,35 @@ parts:
       - lib/*linux-gnu/
       - usr/lib/*linux-gnu/
 
+  readsb:
+    plugin: nil
+    source: https://github.com/wiedehopf/readsb
+    source-type: git
+    build-packages:
+      - libzstd-dev
+    stage-packages:
+      - libzstd1
+    override-build: |
+      make -j"$CRAFT_PARALLEL_BUILD_COUNT" AIRCRAFT_HASH_BITS=11 RTLSDR=yes OPTIMIZE="-O3 -march=native"
+      BIN="$CRAFT_PART_INSTALL/bin/"
+      mkdir -p "$BIN"
+      cp -a readsb "$BIN"
+    prime:
+      - bin/
+      - lib/*linux-gnu/
+      - usr/lib/*linux-gnu/
+
+  mlat-client:
+    plugin: python
+    source: https://github.com/adsbxchange/mlat-client
+    source-type: git
+    stage:
+      - bin/fa-mlat-client
+      - bin/mlat-client
+      - bin/python3
+      - lib
+      - pyvenv.cfg
+
   tar1090:
     plugin: nil
     source: https://github.com/wiedehopf/tar1090
@@ -89,7 +132,7 @@ parts:
 
   lighttpd:
     plugin: autotools
-    source: https://git.lighttpd.net/lighttpd/lighttpd1.4.git
+    source: https://git.lighttpd.net/lighttpd/lighttpd1.4
     source-type: git
     autotools-configure-parameters:
       - --prefix=/usr

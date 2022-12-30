@@ -3,4 +3,6 @@
 # shellcheck source=tree/etc/script-helpers
 . "$SNAP/etc/script-helpers"
 
+ensure_uuid
+
 snap_service restart

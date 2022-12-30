@@ -1,0 +1,35 @@
+#!/bin/bash -e
+
+# shellcheck source=tree/etc/script-helpers
+. "$SNAP/etc/script-helpers"
+
+NET_SOURCE="localhost,30005,beast_in,silent_fail"
+NET_TARGET="feed1.adsbexchange.com,30004,beast_reduce_out,feed2.adsbexchange.com,64004"
+
+data_dir="$SNAP_COMMON/readsb"
+mkdir -p "$data_dir"
+
+lat="$(get_conf coord.lat)"
+lon="$(get_conf coord.lon)"
+declare -a coord_args=()
+if [ "$lat" ] && [ "$lon" ]; then
+    coord_args=("--lat" "$lat" "--lon" "$lon")
+fi
+
+exec "$SNAP/bin/readsb" \
+     --quiet \
+     --max-range 450 \
+     --net \
+     --net-only \
+     --net-heartbeat 60 \
+     --net-ro-size 1280 \
+     --net-ro-interval 0.2 \
+     --net-bi-port 30154 \
+     --net-beast-reduce-interval 0.5 \
+     --net-connector "$NET_SOURCE" \
+     --net-connector "$NET_TARGET" \
+     --range-outline-hours 24 \
+     --uuid-file "$UUID_FILE" \
+     --write-json "$data_dir" \
+     --write-json-every 1 \
+     "${coord_args[@]}"

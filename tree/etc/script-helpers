@@ -25,3 +25,24 @@ snap_service() {
     fi
     snapctl "$action" "$target"
 }
+
+service_require_confs() {
+    local service="$1"
+    shift 1
+    local -a confs=("$@")
+
+    for conf in "${confs[@]}"; do
+        if [ -z "$(get_conf "$conf")" ]; then
+            snap_service stop "$service"
+            return
+        fi
+    done
+}
+
+UUID_FILE="$SNAP_COMMON/uuid"
+
+ensure_uuid() {
+    if [ ! -f "$UUID_FILE" ]; then
+        cat /proc/sys/kernel/random/uuid > "$UUID_FILE"
+    fi
+}

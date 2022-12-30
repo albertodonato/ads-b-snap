@@ -1,0 +1,37 @@
+#!/bin/bash -e
+
+# shellcheck source=tree/etc/script-helpers
+. "$SNAP/etc/script-helpers"
+
+NET_SOURCE="localhost:30005"
+NET_TARGET="feed.adsbexchange.com:31090"
+
+service_require_confs \
+    adsbxfeed-mlat \
+    coord.lat \
+    coord.lon \
+    coord.alt
+
+lat="$(get_conf coord.lat)"
+lon="$(get_conf coord.lon)"
+alt="$(get_conf coord.alt)"
+declare -a extra_args=("--lat" "$lat" "--lon" "$lon" "--alt" "${alt}")
+
+username="$(get_conf mlat.user)"
+if [ "$username" ]; then
+    extra_args+=("--user" "$username")
+fi
+if [ "$(get_conf mlat.privacy)" = "true" ]; then
+    extra_args+=("--privacy")
+fi
+
+exec "$SNAP/bin/mlat-client" \
+    --input-type dump1090 \
+    --no-udp \
+    --input-connect "$NET_SOURCE" \
+    --server "$NET_TARGET" \
+    --results beast,connect,localhost:30104 \
+    --results basestation,listen,31003 \
+    --results beast,listen,30157 \
+    --results beast,connect,localhost:30154 \
+    "${extra_args[@]}"

@@ -3,8 +3,7 @@
 # shellcheck source=tree/etc/script-helpers
 . "$SNAP/etc/script-helpers"
 
+service_require_confs fr24feed fr24.key
+
 key="$(get_conf fr24.key)"
-if [ -z "$key" ]; then
-    snap_service stop fr24feed
-fi
 exec "$SNAP/bin/fr24feed" --fr24key="$key"
