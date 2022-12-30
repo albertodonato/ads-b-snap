@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Snap details</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+    <link rel="stylesheet" href="libs/jquery-ui-1.13.2.min.css" type="text/css">
+    <style type="text/css">
+      main {
+          width: 80%;
+          margin: auto;
+      }
+
+      dl {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+      }
+
+      dt, dd {
+          padding: 5px 0;
+          flex: 0 0 45%;
+      }
+
+      dt {
+          font-weight: bold;
+      }
+    </style>
+  </head>
+  <body class="ui-helper-reset">
+    <main class="ui-widget">
+      <h1 class="ui-widget-header">Snap details</h1>
+      <dl class="ui-widget-content">
+        <dt>Name</dt><dd><!--#echo var="SNAP_NAME" --></dd>
+        <dt>Version</dt><dd><!--#echo var="SNAP_VERSION" --></dd>
+        <dt>Revision</dt><dd><!--#echo var="SNAP_REVISION" --></dd>
+        <dt>Architecture</dt><dd><!--#echo var="SNAP_ARCH" --></dd>
+      </dl>
+    </main>
+  </body>
+</html>
