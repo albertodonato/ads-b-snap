@@ -1,4 +1,4 @@
-VERSION ?= 1.0.25-3
+VERSION ?= 1.0.34-0
 REPO_URL ?= https://repo-feed.flightradar24.com
 
 SNAPCRAFT_TARGET_ARCH ?= amd64
