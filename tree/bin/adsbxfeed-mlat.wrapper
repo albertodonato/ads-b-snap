@@ -10,17 +10,15 @@ service_require_confs \
     adsbxfeed-mlat \
     coord.lat \
     coord.lon \
-    coord.alt
+    coord.alt \
+    mlat.user
 
 lat="$(get_conf coord.lat)"
 lon="$(get_conf coord.lon)"
 alt="$(get_conf coord.alt)"
-declare -a extra_args=("--lat" "$lat" "--lon" "$lon" "--alt" "${alt}")
+user="$(get_conf mlat.user)"
+declare -a extra_args=("--lat" "$lat" "--lon" "$lon" "--alt" "${alt}" "--user" "$user")
 
-username="$(get_conf mlat.user)"
-if [ "$username" ]; then
-    extra_args+=("--user" "$username")
-fi
 if [ "$(get_conf mlat.privacy)" = "true" ]; then
     extra_args+=("--privacy")
 fi
