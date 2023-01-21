@@ -1,0 +1,23 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Repository checkout
+      uses: actions/checkout@v2
+
+    - name: Run ShellCheck
+      uses: ludeeus/action-shellcheck@master
+      with:
+        check_together: 'yes'
+      env:
+        SHELLCHECK_OPTS: -s bash -x
