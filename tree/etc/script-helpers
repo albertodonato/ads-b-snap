@@ -30,13 +30,17 @@ service_require_confs() {
     local service="$1"
     shift 1
     local -a confs=("$@")
+    local -a missing_confs
 
     for conf in "${confs[@]}"; do
         if [ -z "$(get_conf "$conf")" ]; then
-            snap_service stop "$service"
-            return
+            missing_confs+=("$conf")
         fi
     done
+    if [ "${#missing_confs[@]}" -gt 0 ]; then
+        echo "Missing required config option(s), stopping service: ${missing_confs[*]}." >&2
+        snap_service stop "$service"
+    fi
 }
 
 UUID_FILE="$SNAP_COMMON/uuid"
