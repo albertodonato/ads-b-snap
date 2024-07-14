@@ -10,11 +10,11 @@ description: |
   configuration options.
 confinement: strict
 grade: stable
-base: core22
-architectures:
-  - build-on: amd64
-  - build-on: armhf
-  - build-on: arm64
+base: core24
+platforms:
+  amd64:
+  armhf:
+  arm64:
 
 layout:
   /etc/fr24feed.ini:
@@ -74,15 +74,16 @@ parts:
       - libbladerf-dev
       - libhackrf-dev
       - liblimesuite-dev
-      - libncurses5-dev
+      - libncurses-dev
       - librtlsdr-dev
       - libusb-1.0-0-dev
       - pkg-config
     stage-packages:
       - libbladerf2
       - libhackrf0
-      - liblimesuite20.10-1
-      - librtlsdr0
+      - liblimesuite23.11-1
+      - libncurses6
+      - librtlsdr2
       - libusb-1.0-0
     override-build: |
       make -j"$CRAFT_PARALLEL_BUILD_COUNT"
