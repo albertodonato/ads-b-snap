@@ -1,12 +1,12 @@
 VERSION ?= 1.0.48-0
 REPO_URL ?= https://repo-feed.flightradar24.com
 
-SNAPCRAFT_TARGET_ARCH ?= amd64
+CRAFT_TARGET_ARCH ?= amd64
 
-ifeq ($(SNAPCRAFT_TARGET_ARCH), amd64)
+ifeq ($(CRAFT_TARGET_ARCH), amd64)
 DOWNLOAD_URL := $(REPO_URL)/linux_binaries/fr24feed_$(VERSION)_amd64.tgz
-else ifeq ($(findstring $(SNAPCRAFT_TARGET_ARCH), arm64 armhf), $(SNAPCRAFT_TARGET_ARCH))
-DOWNLOAD_URL := $(REPO_URL)/rpi_binaries/fr24feed_$(VERSION)_$(SNAPCRAFT_TARGET_ARCH).tgz
+else ifeq ($(findstring $(CRAFT_TARGET_ARCH), arm64 armhf), $(CRAFT_TARGET_ARCH))
+DOWNLOAD_URL := $(REPO_URL)/rpi_binaries/fr24feed_$(VERSION)_$(CRAFT_TARGET_ARCH).tgz
 else
 $(error "unsupported architecture")
 endif
@@ -28,6 +28,6 @@ clean:
 install: DESTDIR ?= /usr
 install: $(BIN)
 	install -d $(DESTDIR)/bin $(DESTDIR)/etc
-	install fr24feed.ini $(DESTDIR)/etc
+	install fr24feed.ini -t $(DESTDIR)/etc
 	install $(BIN) -t $(DESTDIR)/bin
 .PHONY: install
