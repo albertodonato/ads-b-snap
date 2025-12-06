@@ -1,11 +1,11 @@
-VERSION ?= 1.0.48-0
+VERSION ?= 1.0.54-0
 REPO_URL ?= https://repo-feed.flightradar24.com
 
 CRAFT_TARGET_ARCH ?= amd64
 
 ifeq ($(CRAFT_TARGET_ARCH), amd64)
 DOWNLOAD_URL := $(REPO_URL)/linux_binaries/fr24feed_$(VERSION)_amd64.tgz
-else ifeq ($(findstring $(CRAFT_TARGET_ARCH), arm64 armhf), $(CRAFT_TARGET_ARCH))
+else ifeq ($(CRAFT_TARGET_ARCH), arm64)
 DOWNLOAD_URL := $(REPO_URL)/rpi_binaries/fr24feed_$(VERSION)_$(CRAFT_TARGET_ARCH).tgz
 else
 $(error "unsupported architecture")
