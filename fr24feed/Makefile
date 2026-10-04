@@ -1,4 +1,4 @@
-VERSION ?= 1.0.54-0
+VERSION ?= 1.0.57-1
 REPO_URL ?= https://repo-feed.flightradar24.com
 
 CRAFT_TARGET_ARCH ?= amd64
